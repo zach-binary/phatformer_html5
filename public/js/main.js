@@ -1,3 +1,5 @@
-require(['game/graphics'], function() {
-	Graphics.InitCanvas('GameCanvas', 800, 600);
+require(['game/client'], function() {
+	Client.Preload(function() {
+		Client.Start();
+	});
 });
