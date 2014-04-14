@@ -1,9 +1,6 @@
 define(['game/graphics', 'game/input'], function() {
 	window.Systems = {};
 
-	// block until systems have been loaded
-	require(['systems/sprite']);
-
 	window.Systems.sprite = function(e, c) {
 		var sprite = Graphics.sprites[c.name],
 			frame;
@@ -21,20 +18,21 @@ define(['game/graphics', 'game/input'], function() {
 		var tileCollisions = e.Touches('tilemap'),
 			i = tileCollisions.length;
 
-		if (i <= 0 || e.body.vel.y !== 0)
+		if (i <= 0 || e.body.vel.y < 0)
 			c.grounded = false;
-
-		while(i--) {
-			if (!c.grounded && tileCollisions[i].mtd.y < 0) {
-				c.grounded = true;
-				e.body.vel.y = 0;
-				e.body.accel.y = 0;
+		else {
+			while(i--) {
+				if (!c.grounded && tileCollisions[i].mtd.y < 0) {
+					c.grounded = true;
+					e.body.vel.y = 0;
+					e.body.accel.y = 0;
+				}
 			}
 		}
 	};
 
 	window.Systems.controls = function(e, c) {
-		if (Input.KeyPressed(c.up)) {
+		if (Input.KeyPressed(c.up) && e.body.vel.y === 0) {
 			e.body.vel.y = -1;
 		}
 

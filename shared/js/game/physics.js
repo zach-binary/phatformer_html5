@@ -4,6 +4,8 @@
 	var Physics = {
 
 		entities: [],
+		statics: [],
+		dynamics: [],
 		delta: 0,
 
 		Update: function() {
@@ -34,45 +36,51 @@
 		},
 
 		CheckCollisions: function() {
-			var dynamics = Physics.GetDynamicBodies(),
-				statics = Physics.GetStaticBodies(),
-				all = dynamics.concat(statics),
+			var all = Physics.dynamics.concat(Physics.statics),
 				i, j, b1, b2;
 
-			for(i in all) {
-				b1 = all[i];
+			for(i in Physics.dynamics) {
+				b2 = Physics.dynamics[i];
 
-				b1.body.bounds.x = b1.body.x;
-				b1.body.bounds.y = b1.body.y;
+				b2.hits = [];
+				Physics.UpdateBounds(b2);
 
-				for(j in dynamics) {
-					b2 = dynamics[j];
+				for(j in all) {
+					b1 = all[j];
 
 					if (b1 == b2)
 						continue;
 
-					if (b2.body.bounds.Intersects(b1.body.bounds)) {
-						b2.hits.push({ 
-							entity: b1, 
-							mtd: b2.body.bounds.MinimumTranslationVector(b1.body.bounds)
-						});
-					}
+					Physics.CheckCollision(b1, b2);
 				}
 			}
 
 		},
 
-		GetDynamicBodies: function() {
-			return Physics.entities.filter(function(e) {
-				e.hits = [];
-				return e.body.type == 'dynamic';
-			});
+		CheckCollision: function(b1, b2) {
+			if (b2.body.bounds.Intersects(b1.body.bounds)) {
+				b2.hits.push({ 
+					entity: b1, 
+					mtd: b2.body.bounds.MinTranslationVector(b1.body.bounds)
+				});
+			}
 		},
 
-		GetStaticBodies: function() {
-			return Physics.entities.filter(function(e) {
-				return e.body.type == 'static';
-			});
+		UpdateBounds: function(entity) {
+			entity.body.bounds.x = entity.body.x;
+			entity.body.bounds.y = entity.body.y;
+		},
+
+		RemoveBody: function(entity) {
+			var index;
+			if (entity.body.type == 'dynamic') {
+				index = Physics.dynamics.indexOf(entity);
+				Physics.dynamics.splice(index, 1);
+			}
+			else if (entity.body.type == 'static') {
+				index = Physics.statics.indexOf(entity);
+				Physics.statics.splice(index, 1);
+			}
 		}
 
 	};
@@ -108,7 +116,7 @@
 		return true;
 	};
 
-	Physics.AABB.prototype.MinimumTranslationVector = function(box) 
+	Physics.AABB.prototype.MinTranslationVector = function(box) 
 	{
 		var left = box.x - (this.x + this.w);
 		var right = (box.x + box.w) - this.x;

@@ -112,6 +112,13 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 
 			this.body.bounds = new Physics.AABB(this.body.x, this.body.y, bounds.w, bounds.h);
 		}
+
+		if (this.body.type == 'dynamic') {
+			Physics.dynamics.push(this);
+		}
+		else if (this.body.type == 'static') {
+			Physics.statics.push(this);
+		}
 	};
 
 	Entity.prototype.Touches = function(component) {
@@ -122,6 +129,13 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 		}
 
 		return touches;
+	};
+
+	Entity.prototype.Kill = function() {
+		var index = Client.entities.indexOf(this);
+		Client.entities.splice(index, 1);
+
+		Physics.RemoveBody(this);
 	};
 
 	window.Client = Client;
