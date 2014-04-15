@@ -39,7 +39,7 @@
 			for(i in Physics.dynamics) {
 				b2 = Physics.dynamics[i];
 
-				b2.hits = [];
+				b2.hits.length = 0;
 				Physics.UpdateBounds(b2);
 
 				for(j in all) {

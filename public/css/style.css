@@ -8,3 +8,5 @@ a {
 }
 
 #GamePanel { border: 4px solid gray; border-radius: 2px; width: 800px; height: 600px; }
+
+#GameCanvas { background-color: #A8D4FF; }
