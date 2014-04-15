@@ -108,6 +108,15 @@ define(['game/graphics', 'game/input'], function() {
 		var tileCollisions = e.Touches('tilemap'),
 			i = tileCollisions.length;
 
+		if (e.Touches('deadzone').length > 0) {
+			e.Kill();
+
+			if (c.is_player)
+				Client.LoadLevel('/shared/levels/level1.json', Client.OnLevelLoad);
+
+			return;
+		}
+
 		while(i--) {
 			e.body.x += tileCollisions[i].mtd.x;
 			e.body.y += tileCollisions[i].mtd.y;

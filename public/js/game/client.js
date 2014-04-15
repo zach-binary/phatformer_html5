@@ -41,7 +41,6 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 			Client.preloadMsg.parentNode.removeChild(Client.preloadMsg);
 			Graphics.InitCanvas('GameCanvas', 800, 600);
 			Client.LoadLevel('/shared/levels/level1.json', Client.OnLevelLoad);
-			Physics.entities = Client.entities;
 			Input.Initialize();
 			Client.Loop();	
 		},
@@ -77,10 +76,6 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 		},
 
 		ClearCanvas: function(context) {
-			// context.setTransform(1, 0, 0, 1, 0, 0);
-			// context.translate(Client.offset.x, Client.offset.y);
-			// context.rect(Client.offset.x, Client.offset.y, 800, 600);
-			// context.stroke();
 			context.clearRect(0, 0, Graphics.canvas.width, Graphics.canvas.height);
 
 		},
@@ -101,6 +96,10 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 
 		OnLevelLoad: function(levelObj) {
 			var key;
+
+			Client.entities.length = 0;
+			Physics.dynamics.length = 0;
+			Physics.statics.length = 0;
 
 			for(key in levelObj) {
 				Client.entities.push(new Entity(levelObj[key]));

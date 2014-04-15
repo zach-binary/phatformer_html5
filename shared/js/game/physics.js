@@ -3,18 +3,15 @@
 	// Physics is responsible for movement and collisionts
 	var Physics = {
 
-		entities: [],
 		statics: [],
 		dynamics: [],
 		delta: 0,
 
 		Update: function() {
-			var i = Physics.entities.length;
+			var i = Physics.dynamics.length;
 			while(i--) {
-				if (Physics.entities[i].body.type == 'dynamic') {
-					Physics.CalcVelocity(Physics.entities[i]);
-					Physics.MoveEntity(Physics.entities[i]);
-				}
+				Physics.CalcVelocity(Physics.dynamics[i]);
+				Physics.MoveEntity(Physics.dynamics[i]);
 			}
 
 			Physics.CheckCollisions();
