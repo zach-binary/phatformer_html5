@@ -38,7 +38,7 @@ define(['game/graphics', 'game/input'], function() {
 
 	window.Systems.controls = function(e, c) {
 		if (Input.KeyPressed(c.up) && e.body.vel.y === 0) {
-			e.body.vel.y = -1;
+			e.body.vel.y = -0.8;
 		}
 
 		e.body.vel.x = 0;
@@ -51,6 +51,23 @@ define(['game/graphics', 'game/input'], function() {
 			e.body.vel.x = 0.4;
 		}
 
+	};
+
+	window.Systems.dive_kick = function(e, c) {
+		if (!c.diving && Input.KeyPressed(c.command)) {
+			c.diving = true;
+		}
+
+		if (c.diving) {
+			e.body.accel.x = 0.8;
+			e.body.accel.y = 0.8;
+		}
+
+		if (c.diving && e.Touches('tilemap').length > 0) {
+			c.diving = false;
+			e.body.accel.x = 0;
+			e.body.accel.y = 0;
+		}
 	};
 
 	window.Systems.player_animations = function(e, c) {
