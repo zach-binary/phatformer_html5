@@ -11,6 +11,8 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 
 		entities: [],
 
+		offset: { x: 100, y: 0 },
+
 		preloadMsg: document.getElementById('PreloadMsg'),
 
 		Preload: function(callback) {
@@ -75,7 +77,12 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 		},
 
 		ClearCanvas: function(context) {
+			// context.setTransform(1, 0, 0, 1, 0, 0);
+			// context.translate(Client.offset.x, Client.offset.y);
+			// context.rect(Client.offset.x, Client.offset.y, 800, 600);
+			// context.stroke();
 			context.clearRect(0, 0, Graphics.canvas.width, Graphics.canvas.height);
+
 		},
 
 		LoadLevel: function(path, callback) {

@@ -8,7 +8,12 @@ define(['game/graphics', 'game/input'], function() {
 		sprite.Update();
 		frame = sprite.currentFrame;
 
-		Graphics.context.drawImage(sprite.image, frame.x, frame.y, frame.w, frame.h, e.body.x, e.body.y, frame.w, frame.h);
+		Graphics.context.drawImage(sprite.image,
+			frame.x, frame.y,
+			frame.w, frame.h, 
+			e.body.x - Client.offset.x, e.body.y - Client.offset.y, 
+			frame.w, frame.h
+		);
 	};
 
 	window.Systems.gravity = function(e, c) {
@@ -87,7 +92,12 @@ define(['game/graphics', 'game/input'], function() {
 				yOffset += sprite.h;
 			}
 
-			Graphics.context.drawImage(sprite.image, frame.x, frame.y, frame.w, frame.h, e.body.x + xOffset, e.body.y + yOffset, frame.w, frame.h);
+			Graphics.context.drawImage(sprite.image, 
+				frame.x, frame.y, 
+				frame.w, frame.h, 
+				e.body.x + xOffset - Client.offset.x, 
+				e.body.y + yOffset - Client.offset.y, 
+				frame.w, frame.h);
 
 			xOffset += sprite.w;
 		}
@@ -102,6 +112,29 @@ define(['game/graphics', 'game/input'], function() {
 			e.body.x += tileCollisions[i].mtd.x;
 			e.body.y += tileCollisions[i].mtd.y;
 		}
+	};
+
+	window.Systems.center = function(e, c) {
+		var center = { 
+			x: Graphics.canvas.width / 2, 
+			y: Graphics.canvas.height / 2 
+		};
+
+		Client.offset.x = e.body.x - center.x;
+		Client.offset.y = e.body.y - center.y;
+
+		if (Client.offset.x < 0)
+			Client.offset.x = 0;
+
+		if (Client.offset.y < 0)
+			Client.offset.y = 0;
+
+		if (Client.offset.x + Graphics.canvas.width > c.view.width) 
+			Client.offset.x = c.view.width - Graphics.canvas.width;
+		
+		if (Client.offset.y + Graphics.canvas.height > c.view.height) 
+			Client.offset.y = c.view.height - Graphics.canvas.height;
+		
 	};
 
 });
