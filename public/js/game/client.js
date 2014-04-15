@@ -16,7 +16,7 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 		preloadMsg: document.getElementById('PreloadMsg'),
 
 		Preload: function(callback) {
-			var requestedAssets = 2;
+			var requestedAssets = 3;
 			var loadedAssets = 0;
 			var onAssetLoad = function() {
 				loadedAssets++;
@@ -33,6 +33,12 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 			ninja.AddAnimation('jumping', 0, [7]);
 			ninja.AddAnimation('jumping_left', 0, [18]);
 			ninja.currentAnim = ninja.anims.idle;
+
+			var wolf = Graphics.LoadSprite('/images/Sprites/wolf.png', 'wolf', 64, 32, onAssetLoad);
+
+			wolf.AddAnimation('running', 100, [20, 21, 22, 23, 24]);
+			wolf.AddAnimation('running_left', 100, [55, 56, 57, 58, 59]);
+			wolf.currentAnim = wolf.anims.running;
 
 			var tile = Graphics.LoadSprite('/images/Tiles/ancient_tiles.png', 'tile', 16, 16, onAssetLoad);
 		},

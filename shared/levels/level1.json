@@ -62,14 +62,14 @@
 		"name": "tiles_2",
 		"body": {
 			"x": 320,
-			"y": 372,
+			"y": 396,
 			"type": "static",
-			"bounds": { "w": 128, "h": 128}
+			"bounds": { "w": 192, "h": 128}
 		},
 		"components": {
 			"tilemap": {
 				"sprite": "tile",
-				"width": 8,
+				"width": 12,
 				"height": 8,
 				"map": [230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230,230, 230, 230,230]
 			}
@@ -85,6 +85,70 @@
 		},
 		"components": {
 			"deadzone": true
+		}
+	},
+	"4": {
+		"name": "wolf",
+		"body": {
+			"x": 320,
+			"y": 340,
+			"type": "dynamic",
+			"vel": { "x": 0.1, "y": 0 },
+			"accel": { "x": 0, "y": 0 },
+			"maxVel": { "x": 20, "y": 2 },
+			"bounds": { "w": 64, "h": 32 }
+		},
+		"components": {
+			"sprite": {
+				"name": "wolf"
+			},
+			"platformer": {
+				"is_player": false
+			},
+			"gravity": {
+				"accel": 0.0048,
+				"grounded": false
+			},
+			"wolf": true,
+			"wolf_animations": {
+				"name": "wolf"
+			}
+		}
+	},
+	"5": {
+		"name": "keypoint_1",
+		"body": {
+			"x": 509,
+			"y": 360,
+			"type": "static",
+			"bounds": { "w": 2, "h": 40 }
+		},
+		"components": {
+			"keypoint": {
+				"target": "wolf",
+				"vel": {
+					"x": -0.2,
+					"y": 0
+				}
+			}
+		}
+	},
+	"6": {
+		"name": "keypoint_2",
+		"body": {
+			"x": 320,
+			"y": 360,
+			"type": "static",
+			"bounds": { "w": 2, "h": 40 }
+		},
+		"components": {
+			"keypoint": {
+				"target": "wolf",
+				"vel": {
+					"x": 0.2,
+					"y": 0
+				}
+			}
 		}
 	}
 }

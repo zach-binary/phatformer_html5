@@ -61,6 +61,13 @@ define(['game/graphics', 'game/input'], function() {
 		if (c.diving) {
 			e.body.accel.x = 0.8;
 			e.body.accel.y = 0.8;
+
+			if (e.Touches('wolf').length > 0) {
+				e.body.vel.y = -0.8;
+				e.body.accel.x = 0;
+				e.body.accel.y = 0;
+				c.diving = false;
+			}
 		}
 
 		if (c.diving && e.Touches('tilemap').length > 0) {
@@ -161,6 +168,34 @@ define(['game/graphics', 'game/input'], function() {
 		if (Client.offset.y + Graphics.canvas.height > c.view.height) 
 			Client.offset.y = c.view.height - Graphics.canvas.height;
 		
+	};
+
+	window.Systems.wolf = function(e, c) {
+		var keypoints = e.Touches('keypoint');
+
+		if (keypoints.length > 0) {
+			e.body.vel.x = keypoints[0].entity.components.keypoint.vel.x;
+			e.body.vel.y = keypoints[0].entity.components.keypoint.vel.y;
+		}
+	};
+
+	window.Systems.wolf_animations = function(e, c) {
+		var sprite = Graphics.sprites[c.name];
+
+		if (e.body.vel.x > 0)
+			sprite.currentAnim = sprite.anims.running;
+		else
+			sprite.currentAnim = sprite.anims.running_left;
+	};
+
+	window.Systems.keypoint = function(e, c) {
+		var targets = e.Touches(c.target), i = targets.length;
+
+		while(i--) {
+			targets[i].entity.body.vel.x = c.vel.x;
+			targets[i].entity.body.vel.y = c.vel.y;
+		}
+
 	};
 
 });
