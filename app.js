@@ -4,6 +4,8 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var physics = require('./shared/js/game/physics');
+var systems = require ('./shared/js/game/systems');
 
 var routes = require('./routes/index');
 

@@ -13,8 +13,6 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 
 		offset: { x: 100, y: 0 },
 
-		preloadMsg: document.getElementById('PreloadMsg'),
-
 		Preload: function(callback) {
 			var requestedAssets = 3;
 			var loadedAssets = 0;
@@ -44,9 +42,7 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 		},
 
 		Start: function() {
-			Client.preloadMsg.parentNode.removeChild(Client.preloadMsg);
 			Graphics.InitCanvas('GameCanvas', 800, 600);
-			Client.LoadLevel('/shared/levels/level1.json', Client.OnLevelLoad);
 			Input.Initialize();
 			Client.Loop();	
 		},
@@ -59,6 +55,7 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 
 			Client.ClearCanvas(Graphics.context);
 			Client.Update();
+			Client.Draw();
 
 			requestAnimationFrame(Client.Loop);
 		},
@@ -79,6 +76,21 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 
 			Physics.Update();
 			Input.Update();
+		},
+
+		Draw: function() {
+			var i = Client.entities.length;
+			var component;
+			var entity;
+
+			while(i--) {
+				entity = Client.entities[i];
+				for(component in entity.components) {
+					if (window.Graphics.Systems[component]) {
+						window.Graphics.Systems[component](entity, entity.components[component]);
+					}
+				}
+			}
 		},
 
 		ClearCanvas: function(context) {

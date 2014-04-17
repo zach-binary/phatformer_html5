@@ -1,5 +1,7 @@
 (function() {
 
+	var global = typeof window !== 'undefined' ? window : exports;
+
 	// Physics is responsible for movement and collisionts
 	var Physics = {
 
@@ -146,5 +148,5 @@
 		return mtd;
 	};
 
-	window.Physics = Physics;
+	global.Physics = Physics;
 })();

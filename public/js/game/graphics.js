@@ -4,6 +4,8 @@
 		images: {},
 		sprites: {},
 
+		Systems: {},
+
 		InitCanvas: function(id, w, h) {
 			Graphics.canvas = document.getElementById(id);
 
