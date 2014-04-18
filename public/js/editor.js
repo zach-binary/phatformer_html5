@@ -156,8 +156,8 @@ require(['game/client'], function() {
 
 	var _dragEntity = function(e) {
 		if (selectedEntity) {
-			selectedEntity.body.x = lastOffset.x + entityStart.x + (e.offsetX - start.x);
-			selectedEntity.body.y = lastOffset.y + entityStart.y + (e.offsetY - start.y);
+			selectedEntity.body.x = entityStart.x + (e.offsetX - start.x);
+			selectedEntity.body.y = entityStart.y + (e.offsetY - start.y);
 		}
 	};
 
