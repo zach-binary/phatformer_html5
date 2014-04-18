@@ -3,6 +3,7 @@
 <head>
 	<title>Phatformer Editor</title>
 	<link rel='stylesheet' href='/css/style.css' />
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src='/js/lib/require.js' data-main='/js/editor'></script>
 </head>
 <body>
@@ -11,7 +12,19 @@
 		<canvas id='GameCanvas' oncontextmenu="return false;"></canvas>
 	</div>
 	<section id='Controls'>
-		
+		<h4>Body</h4>
+		<div id='Body'>
+			<label>x</label>
+			<input id='xPos' type="text" disabled />
+
+			<label>y</label>
+			<input id='yPos' type="text" disabled />
+		</div>
+		<h4>Components</h4>
+		<div>
+			<pre id='Components'></pre>
+			
+		</div>
 	</section>
 </body>
 

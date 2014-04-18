@@ -11,7 +11,7 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 
 		entities: [],
 
-		offset: { x: 100, y: 0 },
+		offset: { x: 0, y: 0 },
 
 		Preload: function(callback) {
 			var requestedAssets = 3;

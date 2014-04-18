@@ -11,4 +11,4 @@ a {
 
 #GameCanvas { background-color: #6B9CCC; }
 
-#Controls { float: left; width: 300px; height: 600px; border: 1px solid #aaa; margin-left: 10px; }
+#Controls { float: left; width: 300px; height: 600px; border: 1px solid #aaa; margin-left: 10px; overflow: scroll; padding: 10px; }
