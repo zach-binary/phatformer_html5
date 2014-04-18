@@ -4,6 +4,6 @@ require(['game/client'], function() {
 		preloadMsg.parentNode.removeChild(preloadMsg);
 
 		Client.Start();
-		Client.LoadLevel('/shared/levels/level1.json', Client.OnLevelLoad);
+		Client.LoadLevel('/shared/levels/leveltest.json', Client.OnLevelLoad);
 	});
 });

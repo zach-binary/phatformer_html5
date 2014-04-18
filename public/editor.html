@@ -12,19 +12,30 @@
 		<canvas id='GameCanvas' oncontextmenu="return false;"></canvas>
 	</div>
 	<section id='Controls'>
+		<a href='#' id='Save'>Save</a>
 		<h4>Body</h4>
 		<div id='Body'>
-			<label>x</label>
-			<input id='xPos' type="text" disabled />
-
-			<label>y</label>
-			<input id='yPos' type="text" disabled />
+			<div>
+				<label>x</label>
+				<input id='xPos' type="text" disabled />
+			</div>
+			<div>
+				<label>y</label>
+				<input id='yPos' type="text" disabled />
+			</div>
 		</div>
 		<h4>Components</h4>
 		<div>
-			<pre id='Components'></pre>
-			
+			<a href='#' id='Delete'>Delete</a>
+		<div>
+			<textarea id='Components'></textarea>
 		</div>
+	</section>
+	<section id='Output'>
+		<a href='#' id='Hide'>Hide</a>
+		<div>
+			<textarea></textarea>
+		<div>
 	</section>
 </body>
 
