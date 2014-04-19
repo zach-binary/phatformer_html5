@@ -55,7 +55,7 @@ require(['game/client'], function() {
 
 	var controlPanel = $('#Controls');
 
-	var DisplayEntityInfo = function(e) {
+	function DisplayEntityInfo (e) {
 		Graphics.context.fillStyle = 'rgba(0, 0, 0, 1.0)';
 		Graphics.context.font = 'bold 12pt sans-serif';
 		if (e.name)
@@ -77,9 +77,9 @@ require(['game/client'], function() {
 			e.body.y - Client.offset.y, 
 			16, 16
 		);
-	};
+	}
 
-	var CheckMouseHit = function(x, y) {
+	function CheckMouseHit (x, y) {
 		var i = Client.entities.length,
 			body,
 			box;
@@ -93,14 +93,14 @@ require(['game/client'], function() {
 			}
 		}
 
-	};
+	}
 
-	var OnMouseMove = function(e) {
+	function OnMouseMove (e) {
 		if (_onMouseMove)
 			_onMouseMove(e);		
-	};
+	}
 
-	var OnMouseDown = function(e) {
+	function OnMouseDown (e) {
 		if (e.button === 2)
 			_onMouseMove = _dragScreen;
 
@@ -113,22 +113,22 @@ require(['game/client'], function() {
 
 		lastOffset.x = Client.offset.x;
 		lastOffset.y = Client.offset.y;
-	};
+	}
 
-	var OnMouseUp = function(e) {
+	function OnMouseUp (e) {
 		_onMouseMove = null;
-	};
+	}
 
-	var OnSave = function(e) {
+	function OnSave (e) {
 		var output = JSON.stringify(Client.entities, null, 4);
 		$('#Output').show().find('textarea').html(output);
-	};
+	}
 
-	var OnHide = function(e) {
+	function OnHide (e) {
 		$('#Output').hide();
-	};
+	}
 
-	var OnDelete = function(e) {
+	function OnDelete (e) {
 		var index = Client.entities.indexOf(selectedEntity);
 		if (index !== -1)
 			Client.entities.splice(index, 1);
@@ -138,19 +138,19 @@ require(['game/client'], function() {
 		controlPanel.find('#Components').html('');
 
 		selectedEntity = null;
-	};
+	}
 
-	var OnComponentChange = function(e) {
+	function OnComponentChange (e) {
 		var componentText = $('#Components').val();
 		try {
 			selectedEntity.components = JSON.parse(componentText);
 		}
 		catch (exception) { }
-	};
+	}
 
 	var _onMouseMove = null;
 
-	var _selectEntity = function(e) {
+	function _selectEntity (e) {
 		selectedEntity = CheckMouseHit(e.offsetX, e.offsetY);
 
 		if (selectedEntity) {
@@ -163,19 +163,19 @@ require(['game/client'], function() {
 			controlPanel.find('#yPos').val(selectedEntity.body.y);
 			controlPanel.find('#Components').html(JSON.stringify(selectedEntity.components, null, 4));
 		}
-	};
+	}
 
-	var _dragEntity = function(e) {
+	function _dragEntity (e) {
 		if (selectedEntity) {
 			selectedEntity.body.x = entityStart.x + (e.offsetX - start.x);
 			selectedEntity.body.y = entityStart.y + (e.offsetY - start.y);
 		}
-	};
+	}
 
-	var _dragScreen = function(e) {
+	function _dragScreen (e) {
 		Client.offset.x = lastOffset.x + start.x - e.offsetX;
 		Client.offset.y = lastOffset.y + start.y - e.offsetY;
-	};
+	}
 
 	var Box = function(x, y, w, h) {
 		this.x = x || 0;
