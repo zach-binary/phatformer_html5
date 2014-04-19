@@ -1,5 +1,4 @@
 <html lang='en'>
-
 <head>
 	<title>Phatformer Editor</title>
 	<link rel='stylesheet' href='/css/style.css' />
@@ -8,35 +7,39 @@
 </head>
 <body>
 	<h1>Phatformer Editor</h1>
-	<div id='GamePanel'>
-		<canvas id='GameCanvas' oncontextmenu="return false;"></canvas>
-	</div>
-	<section id='Controls'>
-		<a href='#' id='Save'>Save</a>
-		<h4>Body</h4>
-		<div id='Body'>
-			<div>
-				<label>x</label>
-				<input id='xPos' type="text" disabled />
-			</div>
-			<div>
-				<label>y</label>
-				<input id='yPos' type="text" disabled />
-			</div>
+	<main id='EditorMain'>
+		<div id='GamePanel'>
+			<canvas id='GameCanvas' oncontextmenu="return false;"></canvas>
 		</div>
-		<h4>Components</h4>
-		<div>
-			<a href='#' id='Delete'>Delete</a>
-		<div>
-			<textarea id='Components'></textarea>
-		</div>
-	</section>
-	<section id='Output'>
-		<a href='#' id='Hide'>Hide</a>
-		<div>
-			<textarea></textarea>
-		<div>
-	</section>
+		<section id='Controls'>
+			<a href='#' id='Save'>Save</a>
+			<h4>Body</h4>
+			<div id='Body'>
+				<div>
+					<label>x</label>
+					<input id='xPos' type="text" disabled />
+				</div>
+				<div>
+					<label>y</label>
+					<input id='yPos' type="text" disabled />
+				</div>
+			</div>
+			<h4>Components</h4>
+			<div>
+				<a href='#' id='Delete'>Delete</a>
+			<div>
+				<textarea id='Components'></textarea>
+			</div>
+		</section>
+		<section id='Output'>
+			<a href='#' id='Hide'>Hide</a>
+			<div>
+				<textarea></textarea>
+			<div>
+		</section>
+		<section id='TileSet'>
+			<canvas id='TileSelection'></canvas>
+		</section>
+	</main>
 </body>
-
 </html>

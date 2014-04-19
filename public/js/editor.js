@@ -1,4 +1,4 @@
-require(['game/client'], function() {
+require(['game/client', 'editor/tileset'], function() {
 
 	require(['editor/systems']);
 	
@@ -8,6 +8,7 @@ require(['game/client'], function() {
 		Client.lastFrameDelta = now - Client.lastFrameTime;
 		Client.lastFrameTime = now;
 
+		Tileset.ClearCanvas();
 		Client.ClearCanvas(Graphics.context);
 		Client.Draw();
 
@@ -21,6 +22,7 @@ require(['game/client'], function() {
 			entity = Client.entities[i];
 			DisplayEntityInfo(entity);
 		}
+
 		Graphics.context.stroke();
 
 		if (selectedEntity) {
@@ -31,10 +33,12 @@ require(['game/client'], function() {
 			}
 		}
 
+
 		requestAnimationFrame(Client.Loop);
 	};
 
 	Client.Preload(function() {
+		Tileset.InitCanvas('TileSelection', 256, 256);
 		Client.Start();
 		Client.LoadLevel('/shared/levels/leveltest.json', Client.OnLevelLoad);
 
@@ -61,7 +65,7 @@ require(['game/client'], function() {
 		if (e.name)
 			Graphics.context.fillText(e.name,
 				e.body.x - Client.offset.x, 
-				e.body.y - Client.offset.y - 24
+				e.body.y - Client.offset.y - 12
 			);
 
 		if (e.body.bounds) {
@@ -92,7 +96,6 @@ require(['game/client'], function() {
 				return Client.entities[i];
 			}
 		}
-
 	}
 
 	function OnMouseMove (e) {
