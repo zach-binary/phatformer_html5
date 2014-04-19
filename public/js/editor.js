@@ -1,4 +1,6 @@
 require(['game/client'], function() {
+
+	require(['editor/systems']);
 	
 	// Override loop to perform only Draw calls
 	Client.Loop = function() {
@@ -20,6 +22,14 @@ require(['game/client'], function() {
 			DisplayEntityInfo(entity);
 		}
 		Graphics.context.stroke();
+
+		if (selectedEntity) {
+			for(component in selectedEntity.components) {
+				if (Systems[component]) {
+					Systems[component](selectedEntity, selectedEntity.components[component]);
+				}
+			}
+		}
 
 		requestAnimationFrame(Client.Loop);
 	};
