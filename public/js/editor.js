@@ -47,6 +47,7 @@ require(['game/client'], function() {
 
 	var DisplayEntityInfo = function(e) {
 		Graphics.context.fillStyle = 'rgba(0, 0, 0, 1.0)';
+		Graphics.context.font = 'bold 12pt sans-serif';
 		if (e.name)
 			Graphics.context.fillText(e.name,
 				e.body.x - Client.offset.x, 
