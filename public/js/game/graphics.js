@@ -83,5 +83,14 @@
 		this.currentFrame = this.frames[this.currentAnim.frames[this.currentAnim.index]];
 	};
 
+	Graphics.Sprite.prototype.GetFrameIndex = function(x, y) {
+		var frameX = Math.floor(x / this.w),
+			frameY = Math.floor(y / this.h),
+			width = this.image.width / this.w,
+			index = (frameY * width) + frameX;
+
+		return index;
+	};
+
 	window.Graphics = Graphics;
 })();

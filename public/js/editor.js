@@ -10,6 +10,8 @@ require(['game/client', 'editor/tileset'], function() {
 
 		Tileset.ClearCanvas();
 		Client.ClearCanvas(Graphics.context);
+
+		Input.Update();
 		Client.Draw();
 
 		var i = Client.entities.length;
@@ -33,12 +35,13 @@ require(['game/client', 'editor/tileset'], function() {
 			}
 		}
 
+		Tileset.Draw();
 
 		requestAnimationFrame(Client.Loop);
 	};
 
 	Client.Preload(function() {
-		Tileset.InitCanvas('TileSelection', 256, 256);
+		Tileset.InitCanvas('TileSelection', 456, 256);
 		Client.Start();
 		Client.LoadLevel('/shared/levels/leveltest.json', Client.OnLevelLoad);
 
@@ -110,7 +113,6 @@ require(['game/client', 'editor/tileset'], function() {
 		if (e.button === 0) 
 			_selectEntity(e);
 			
-
 		start.x = e.offsetX;
 		start.y = e.offsetY;
 
@@ -154,9 +156,10 @@ require(['game/client', 'editor/tileset'], function() {
 	var _onMouseMove = null;
 
 	function _selectEntity (e) {
-		selectedEntity = CheckMouseHit(e.offsetX, e.offsetY);
+		var entity = CheckMouseHit(e.offsetX, e.offsetY);
 
-		if (selectedEntity) {
+		if (entity) {
+			selectedEntity = entity;
 			_onMouseMove = _dragEntity;
 
 			entityStart.x = selectedEntity.body.x;
@@ -165,7 +168,18 @@ require(['game/client', 'editor/tileset'], function() {
 			controlPanel.find('#xPos').val(selectedEntity.body.x);
 			controlPanel.find('#yPos').val(selectedEntity.body.y);
 			controlPanel.find('#Components').html(JSON.stringify(selectedEntity.components, null, 4));
+
+			_selectTileset(selectedEntity);
 		}
+	}
+
+	function _selectTileset (entity) {
+		var tilemap = entity.components.tilemap;
+
+		if (tilemap)
+			Tileset.tilemap = tilemap;
+		else
+			Tileset.tilemap = null;
 	}
 
 	function _dragEntity (e) {

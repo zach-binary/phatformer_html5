@@ -70,6 +70,7 @@
                 "sprite": "tile",
                 "width": 40,
                 "height": 30,
+                "tile_size": { "x": 16, "y": 16 },
                 "map": [
                     -1,
                     -1,
