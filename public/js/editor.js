@@ -1,7 +1,13 @@
-require(['game/client', 'editor/tileset'], function() {
+require([
+	'game/client', 
+	'game/graphics',
+	'editor/ui',
+	'editor/tileset'
+	], function(Client, Graphics, EditorUI) {
 
+	// todo: not sure why but if I include this above it gets overridden by the original system requirement
 	require(['editor/systems']);
-	
+
 	// Override loop to perform only Draw calls
 	Client.Loop = function() {
 		var now = new Date();
@@ -42,17 +48,14 @@ require(['game/client', 'editor/tileset'], function() {
 
 	Client.Preload(function() {
 		Tileset.InitCanvas('TileSelection', 456, 256);
-		Client.Start();
+		Client.Start('GameCanvas', 2000, 2000);
 		Client.LoadLevel('/shared/levels/leveltest.json', Client.OnLevelLoad);
 
 		Graphics.canvas.addEventListener('mousemove', OnMouseMove);
 		Graphics.canvas.addEventListener('mousedown', OnMouseDown);
 		Graphics.canvas.addEventListener('mouseup', OnMouseUp);
 
-		$('#Save').click(OnSave);
-		$('#Hide').click(OnHide);
-		$('#Delete').click(OnDelete);
-		$('#Components').change(OnComponentChange);
+		EditorUI.Start();
 	});
 
 	var start = {};
@@ -67,21 +70,21 @@ require(['game/client', 'editor/tileset'], function() {
 		Graphics.context.font = 'bold 12pt sans-serif';
 		if (e.name)
 			Graphics.context.fillText(e.name,
-				e.body.x - Client.offset.x, 
-				e.body.y - Client.offset.y - 12
+				e.body.x - Graphics.offset.x, 
+				e.body.y - Graphics.offset.y - 12
 			);
 
 		if (e.body.bounds) {
 			Graphics.context.rect(
-				e.body.x - Client.offset.x, 
-				e.body.y - Client.offset.y, 
+				e.body.x - Graphics.offset.x, 
+				e.body.y - Graphics.offset.y, 
 				e.body.bounds.w, e.body.bounds.h);
 		}
 
 		Graphics.context.fillStyle = 'rgba(239, 90, 90, 0.7)';
 		Graphics.context.fillRect(
-			e.body.x - Client.offset.x, 
-			e.body.y - Client.offset.y, 
+			e.body.x - Graphics.offset.x, 
+			e.body.y - Graphics.offset.y, 
 			16, 16
 		);
 	}
@@ -95,7 +98,7 @@ require(['game/client', 'editor/tileset'], function() {
 			body = Client.entities[i].body;
 			box = new Box(body.x, body.y, 16, 16);
 
-			if (box.Contains(x + Client.offset.x, y + Client.offset.y)) {
+			if (box.Contains(x + Graphics.offset.x, y + Graphics.offset.y)) {
 				return Client.entities[i];
 			}
 		}
@@ -116,41 +119,12 @@ require(['game/client', 'editor/tileset'], function() {
 		start.x = e.offsetX;
 		start.y = e.offsetY;
 
-		lastOffset.x = Client.offset.x;
-		lastOffset.y = Client.offset.y;
+		lastOffset.x = Graphics.offset.x;
+		lastOffset.y = Graphics.offset.y;
 	}
 
 	function OnMouseUp (e) {
 		_onMouseMove = null;
-	}
-
-	function OnSave (e) {
-		var output = JSON.stringify(Client.entities, null, 4);
-		$('#Output').show().find('textarea').html(output);
-	}
-
-	function OnHide (e) {
-		$('#Output').hide();
-	}
-
-	function OnDelete (e) {
-		var index = Client.entities.indexOf(selectedEntity);
-		if (index !== -1)
-			Client.entities.splice(index, 1);
-
-		controlPanel.find('#xPos').val('');
-		controlPanel.find('#yPos').val('');
-		controlPanel.find('#Components').html('');
-
-		selectedEntity = null;
-	}
-
-	function OnComponentChange (e) {
-		var componentText = $('#Components').val();
-		try {
-			selectedEntity.components = JSON.parse(componentText);
-		}
-		catch (exception) { }
 	}
 
 	var _onMouseMove = null;
@@ -190,8 +164,8 @@ require(['game/client', 'editor/tileset'], function() {
 	}
 
 	function _dragScreen (e) {
-		Client.offset.x = lastOffset.x + start.x - e.offsetX;
-		Client.offset.y = lastOffset.y + start.y - e.offsetY;
+		Graphics.offset.x = lastOffset.x + start.x - e.offsetX;
+		Graphics.offset.y = lastOffset.y + start.y - e.offsetY;
 	}
 
 	var Box = function(x, y, w, h) {

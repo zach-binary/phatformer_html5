@@ -1,9 +1,10 @@
-define(['game/graphics', 'game/input'], function() {
+define(['game/graphics', 'game/input'], function(Graphics, Input) {
 	window.Systems = {};
+	window.Systems.Graphics = {};
 
 	require(['shared/js/game/systems.js']);
 
-	window.Graphics.Systems.sprite = function(e, c) {
+	Systems.Graphics.sprite = function(e, c) {
 		var sprite = Graphics.sprites[c.name],
 			frame;
 
@@ -13,12 +14,12 @@ define(['game/graphics', 'game/input'], function() {
 		Graphics.context.drawImage(sprite.image,
 			frame.x, frame.y,
 			frame.w, frame.h, 
-			e.body.x - Client.offset.x, e.body.y - Client.offset.y, 
+			e.body.x - Graphics.offset.x, e.body.y - Graphics.offset.y, 
 			frame.w, frame.h
 		);
 	};
 
-	window.Systems.player_animations = function(e, c) {
+	Systems.player_animations = function(e, c) {
 		var sprite = Graphics.sprites[c.name];
 
 		if (e.body.vel.y !== 0 && c.lastVel.x >= 0) {
@@ -43,7 +44,7 @@ define(['game/graphics', 'game/input'], function() {
 		}
 	};
 
-	window.Graphics.Systems.tilemap = function(e, c) {
+	Systems.Graphics.tilemap = function(e, c) {
 		var sprite = Graphics.sprites[c.sprite],
 			i, length = c.map.length,
 			xOffset = 0,
@@ -61,8 +62,8 @@ define(['game/graphics', 'game/input'], function() {
 				Graphics.context.drawImage(sprite.image, 
 					frame.x, frame.y, 
 					frame.w, frame.h, 
-					e.body.x + xOffset - Client.offset.x, 
-					e.body.y + yOffset - Client.offset.y, 
+					e.body.x + xOffset - Graphics.offset.x, 
+					e.body.y + yOffset - Graphics.offset.y, 
 					frame.w, frame.h);
 			}
 
@@ -71,30 +72,30 @@ define(['game/graphics', 'game/input'], function() {
 
 	};
 
-	window.Systems.center = function(e, c) {
+	Systems.center = function(e, c) {
 		var center = { 
 			x: Graphics.canvas.width / 2, 
 			y: Graphics.canvas.height / 2 
 		};
 
-		Client.offset.x = e.body.x - center.x;
-		Client.offset.y = e.body.y - center.y;
+		Graphics.offset.x = e.body.x - center.x;
+		Graphics.offset.y = e.body.y - center.y;
 
-		if (Client.offset.x < 0)
-			Client.offset.x = 0;
+		if (Graphics.offset.x < 0)
+			Graphics.offset.x = 0;
 
-		if (Client.offset.y < 0)
-			Client.offset.y = 0;
+		if (Graphics.offset.y < 0)
+			Graphics.offset.y = 0;
 
-		if (Client.offset.x + Graphics.canvas.width > c.view.width) 
-			Client.offset.x = c.view.width - Graphics.canvas.width;
+		if (Graphics.offset.x + Graphics.canvas.width > c.view.width) 
+			Graphics.offset.x = c.view.width - Graphics.canvas.width;
 		
-		if (Client.offset.y + Graphics.canvas.height > c.view.height) 
-			Client.offset.y = c.view.height - Graphics.canvas.height;
+		if (Graphics.offset.y + Graphics.canvas.height > c.view.height) 
+			Graphics.offset.y = c.view.height - Graphics.canvas.height;
 		
 	};
 
-	window.Systems.wolf_animations = function(e, c) {
+	Systems.wolf_animations = function(e, c) {
 		var sprite = Graphics.sprites[c.name];
 
 		if (e.body.vel.x > 0)
@@ -103,4 +104,5 @@ define(['game/graphics', 'game/input'], function() {
 			sprite.currentAnim = sprite.anims.running_left;
 	};
 
+	return Systems;
 });

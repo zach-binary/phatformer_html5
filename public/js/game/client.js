@@ -1,4 +1,9 @@
-define(['game/systems', '/shared/js/game/physics.js'], function() {
+define([
+	'game/systems', 
+	'game/graphics',
+	'game/input',
+	'/shared/js/game/physics.js'
+	], function(Systems, Graphics, Input) {
 
 	// RAF shim
 	window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
@@ -41,8 +46,8 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 			var tile = Graphics.LoadSprite('/images/Tiles/ancient_tiles.png', 'tile', 16, 16, onAssetLoad);
 		},
 
-		Start: function() {
-			Graphics.InitCanvas('GameCanvas', 800, 600);
+		Start: function(id, w, h) {
+			Graphics.InitCanvas(id, w, h);
 			Input.Initialize();
 			Client.Loop();	
 		},
@@ -68,8 +73,8 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 			while(i--) {
 				entity = Client.entities[i];
 				for(component in entity.components) {
-					if (window.Systems[component]) {
-						window.Systems[component](entity, entity.components[component]);
+					if (Systems[component]) {
+						Systems[component](entity, entity.components[component]);
 					}
 				}
 			}
@@ -86,8 +91,8 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 			while(i--) {
 				entity = Client.entities[i];
 				for(component in entity.components) {
-					if (window.Graphics.Systems[component]) {
-						window.Graphics.Systems[component](entity, entity.components[component]);
+					if (Systems.Graphics[component]) {
+						Systems.Graphics[component](entity, entity.components[component]);
 					}
 				}
 			}
@@ -162,5 +167,5 @@ define(['game/systems', '/shared/js/game/physics.js'], function() {
 		Physics.RemoveBody(this);
 	};
 
-	window.Client = Client;
+	return Client;
 });

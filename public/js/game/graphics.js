@@ -1,8 +1,9 @@
-(function() {
+define(function() {
 	var Graphics = {
 
 		images: {},
 		sprites: {},
+		offset: { x: 0, y: 0 },
 
 		Systems: {},
 
@@ -92,5 +93,14 @@
 		return index;
 	};
 
-	window.Graphics = Graphics;
-})();
+	Graphics.Sprite.prototype.GetCoordFromIndex = function(index) {
+		var frame = this.frames[index];
+
+		return {
+			x: frame.x / this.w,
+			y: frame.y / this.h
+		};
+	};
+
+	return Graphics;
+});

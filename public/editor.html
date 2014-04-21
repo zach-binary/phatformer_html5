@@ -1,18 +1,19 @@
 <html lang='en'>
 <head>
 	<title>Phatformer Editor</title>
-	<link rel='stylesheet' href='/css/style.css' />
-	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<link rel='stylesheet' href='/css/editor.css' />
+	<!-- <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> -->
+	<script src="/js/lib/jquery.js"></script>
 	<script src='/js/lib/require.js' data-main='/js/editor'></script>
 </head>
 <body>
-	<h1>Phatformer Editor</h1>
 	<main id='EditorMain'>
 		<div id='GamePanel'>
 			<canvas id='GameCanvas' oncontextmenu="return false;"></canvas>
 		</div>
-		<section id='Controls'>
+		<section id='Controls' class='Panel'>
 			<a href='#' id='Save'>Save</a>
+			<a href='#' id='NewButton'>New Entity</a>
 			<h4>Body</h4>
 			<div id='Body'>
 				<div>
@@ -31,14 +32,55 @@
 				<textarea id='Components'></textarea>
 			</div>
 		</section>
-		<section id='Output'>
-			<a href='#' id='Hide'>Hide</a>
+		<section id='Output' class='Panel'>
+			<a href='#' class='Close'>Close</a>
 			<div>
 				<textarea></textarea>
 			<div>
 		</section>
-		<section id='TileSet'>
+		<section id='TileSet' class='Panel'>
 			<canvas id='TileSelection' oncontextmenu="return false;"></canvas>
+		</section>
+		<section id='NewEntity' class='Panel'>
+			<div>
+				<a href='#' class='Close'>Close</a>
+			</div>
+			<div>
+				<label>x</label>
+				<input type='text' />
+			</div>
+			<div>
+				<label>y</label>
+				<input type='text' />
+			</div>
+			<div>
+				<label>Type</label>
+				<select>
+					<option>dynamic</option>
+					<option>static</option>
+					<option>none</option>
+				</select>
+			</div>
+			<div class='Bounds'>
+				<h4>Bounds</h4>
+				<div>
+					<label>x</label>
+					<input type='text' />
+				</div>
+				<div>
+					<label>y</label>
+					<input type='text' />
+				</div>
+				<div>
+					<label>width</label>
+					<input type='text' />
+				</div>
+				<div>
+					<label>height</label>
+					<input type='text' />
+				</div>
+			</div>
+
 		</section>
 	</main>
 </body>

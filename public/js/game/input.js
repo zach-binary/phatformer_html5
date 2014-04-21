@@ -1,4 +1,4 @@
-(function() {
+define(['game/graphics'], function(Graphics) {
 	var Input = {
 
 		keysDown: {},
@@ -39,8 +39,8 @@
 	};
 
 	function _onMouseMove(e) {
-		Input.mouse.x = e.offsetX - Client.offset.x;
-		Input.mouse.y = e.offsetY - Client.offset.y;
+		Input.mouse.x = e.offsetX + Graphics.offset.x;
+		Input.mouse.y = e.offsetY + Graphics.offset.y;
 	}
 
 	function _onMouseDown(e) {
@@ -62,5 +62,8 @@
 		delete Input.keysDown[e.keyCode];
 	}
 
+	// todo: temp solution till I find good way to share node and browser js modules
 	window.Input = Input;
-})();
+
+	return Input;
+});

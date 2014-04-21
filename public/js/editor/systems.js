@@ -6,16 +6,16 @@
 		var sprite = Graphics.sprites[c.sprite];
 
 		Graphics.context.save();
-		Graphics.context.translate(-Client.offset.x, -Client.offset.y);
+		Graphics.context.translate(-Graphics.offset.x, -Graphics.offset.y);
 		
-		_drawGrid(e, c);
+		_drawGrid(e, c, sprite);
 		_highlightSquare(e, c, sprite);
 
 		Graphics.context.restore();
 
 		_showTileSet(e, c, sprite);
 
-		if (Input.MouseDown(0))
+		if (Input.MouseDown(0)) 
 			_updateMap(e, c, sprite);
 	};
 
@@ -45,19 +45,19 @@
 		}
 	}
 
-	function _drawGrid (e, c) {
-		var width = c.width * 16,
-			height = c.height * 16,
+	function _drawGrid (e, c, sprite) {
+		var width = c.width * sprite.w,
+			height = c.height * sprite.h,
 			i;
 
 		Graphics.context.beginPath();
 
-		for (i = 0; i <= width; i += 16) {
+		for (i = 0; i <= width; i += sprite.w) {
 			Graphics.context.moveTo(e.body.x + i, e.body.y);
 			Graphics.context.lineTo(e.body.x + i, e.body.y + height);
 		}
 
-		for (i = 0; i <= height; i+= 16) {
+		for (i = 0; i <= height; i+= sprite.h) {
 			Graphics.context.moveTo(e.body.x, e.body.y + i);
 			Graphics.context.lineTo(e.body.x + width, e.body.y + i);
 		}
