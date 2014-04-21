@@ -1,4 +1,4 @@
-(function() {
+define(['game/graphics'], function(Graphics) {
 
 	var Tileset = {
 
@@ -122,4 +122,4 @@
 
 	window.Tileset = Tileset;
 
-})();
+});

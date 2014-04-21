@@ -7,24 +7,43 @@
 	<script src='/js/lib/require.js' data-main='/js/editor'></script>
 </head>
 <body>
+	<template id='BodyTemplate'>
+		<div>
+			<input class='Position' type="number" placeholder="X Position"/>
+		</div>
+		<div>
+			<input class='Position' type="number" placeholder="Y Position" />
+		</div>
+		<div>
+			<label>Type</label>
+			<select class='BodyType'>
+				<option>none</option>
+				<option>dynamic</option>
+				<option>static</option>
+			</select>
+		</div>
+		<div class='Bounds'>
+			<h4>Bounds</h4>
+			<div>
+				<input class="Size" type='number' placeholder="Width" />
+			</div>
+			<div>
+				<input class="Size" type='number' placeholder="Height" />
+			</div>
+		</div>
+	</template>
+
 	<main id='EditorMain'>
 		<div id='GamePanel'>
 			<canvas id='GameCanvas' oncontextmenu="return false;"></canvas>
 		</div>
 		<section id='Controls' class='Panel'>
-			<a href='#' id='Save'>Save</a>
-			<a href='#' id='NewButton'>New Entity</a>
+			<nav>
+				<a href='#' id='Save'>Save</a>
+				<a href='#' id='NewButton'>New Entity</a>
+			</nav>
 			<h4>Body</h4>
-			<div id='Body'>
-				<div>
-					<label>x</label>
-					<input id='xPos' type="text" disabled />
-				</div>
-				<div>
-					<label>y</label>
-					<input id='yPos' type="text" disabled />
-				</div>
-			</div>
+			<div class='Body' id='BodyForm1'></div>
 			<h4>Components</h4>
 			<div>
 				<a href='#' id='Delete'>Delete</a>
@@ -42,45 +61,10 @@
 			<canvas id='TileSelection' oncontextmenu="return false;"></canvas>
 		</section>
 		<section id='NewEntity' class='Panel'>
-			<div>
-				<a href='#' class='Close'>Close</a>
-			</div>
-			<div>
-				<label>x</label>
-				<input type='text' />
-			</div>
-			<div>
-				<label>y</label>
-				<input type='text' />
-			</div>
-			<div>
-				<label>Type</label>
-				<select>
-					<option>dynamic</option>
-					<option>static</option>
-					<option>none</option>
-				</select>
-			</div>
-			<div class='Bounds'>
-				<h4>Bounds</h4>
-				<div>
-					<label>x</label>
-					<input type='text' />
-				</div>
-				<div>
-					<label>y</label>
-					<input type='text' />
-				</div>
-				<div>
-					<label>width</label>
-					<input type='text' />
-				</div>
-				<div>
-					<label>height</label>
-					<input type='text' />
-				</div>
-			</div>
-
+			<h4>Create New Entity</h4>
+			<div class='Body'></div>
+			<button>Create</button>
+			<a href='#' class='Close'>Close</a>
 		</section>
 	</main>
 </body>

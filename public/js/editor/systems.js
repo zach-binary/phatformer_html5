@@ -1,4 +1,4 @@
-(function() {
+define(['game/graphics'], function(Graphics) {
 
 	window.Systems = {};
 
@@ -82,4 +82,6 @@
 		Tileset.context.drawImage(sprite.image, 0, 0);
 	}
 
-})();
+	return Systems;
+
+});

@@ -2,11 +2,9 @@ require([
 	'game/client', 
 	'game/graphics',
 	'editor/ui',
+	'editor/systems',
 	'editor/tileset'
-	], function(Client, Graphics, EditorUI) {
-
-	// todo: not sure why but if I include this above it gets overridden by the original system requirement
-	require(['editor/systems']);
+	], function(Client, Graphics, EditorUI, Systems) {
 
 	// Override loop to perform only Draw calls
 	Client.Loop = function() {
@@ -48,7 +46,7 @@ require([
 
 	Client.Preload(function() {
 		Tileset.InitCanvas('TileSelection', 456, 256);
-		Client.Start('GameCanvas', 2000, 2000);
+		Client.Start('GameCanvas', 1000, 800);
 		Client.LoadLevel('/shared/levels/leveltest.json', Client.OnLevelLoad);
 
 		Graphics.canvas.addEventListener('mousemove', OnMouseMove);
