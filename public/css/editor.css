@@ -19,10 +19,10 @@ main fieldset.Body div { text-align: center; margin-top: 5px; }
 #GamePanel { width: 800px; border: 1px solid gray; float: left; margin: 10 10px 0 10px; }
 
 canvas#GameCanvas { background-color: #6B9CCC; }
-canvas#TileSelection { display: block; width: 776px; height: 356px; background-color: #eee; margin: 10px auto;}
+canvas#TileSelection { display: block; width: 776px; height: 256px; background-color: #eee; margin: 10px auto;}
 
 #Controls {-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
-#Controls { width: 280px; height: 978px; overflow: scroll; }
+#Controls { width: 280px; height: 878px; overflow: scroll; }
 #Controls #Components { width: 100%; height: 70%; margin-top: 10px; }
 
 #Output { position: absolute; display: none; width: 800px; height: 600px; top: 200px; left: 200px; }

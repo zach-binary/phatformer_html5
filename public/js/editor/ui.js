@@ -12,7 +12,9 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 
 			$('#Save').click(_onSave);
 			$('a.Close').click(_onClose);
-			$('#Delete').click(_onDelete);
+			$('#Delete').click(function(e) {
+				_onDelete.call(EditorUI, e);
+			});
 			$('#NewButton').click(_onNewEntity);
 			$('#Components').change(_onComponentChange);
 			$('#NewEntity button').click(function(e) {
@@ -42,9 +44,11 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 	}
 
 	function _onDelete (e) {
-		var index = Client.entities.indexOf(EditorUI.selectedEntity);
+		var index = Client.entities.indexOf(this.controllers.body.entity);
 		if (index !== -1)
 			Client.entities.splice(index, 1);
+
+		this.controllers.body.entity = null;
 
 		EditorUI.selectedEntity = null;
 	}
@@ -118,6 +122,14 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 			width = 0,
 			height = 0;
 
+		this.clear = function() {
+			this.x = 0;
+			this.y = 0;
+			this.width = 0;
+			this.height = 0;
+			this.type = 0;
+		}
+
 		self.observe(x, 'x');
 		self.observe(y, 'y');
 		self.observe(type, 'type');
@@ -164,6 +176,10 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		Object.defineProperty(this, 'entity', {
 			get: function() { return entity; },
 			set: function(v) {
+				if (!v) {
+					this.model.clear();
+					return;
+				}
 				entity = v;
 				this.model.x = v.body.x;
 				this.model.y = v.body.y;
@@ -184,7 +200,7 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		$(view.type).change(updateEntityType);
 
 		function onBodyChange(key) {
-			model[key] = view.elems[key].value;
+			model[key] = parseInt(view.elems[key].value);
 
 			if (self.entity) {
 				updateEntityBody(self.entity, key, model[key]);

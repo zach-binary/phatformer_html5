@@ -45,7 +45,7 @@ require([
 	};
 
 	Client.Preload(function() {
-		Tileset.InitCanvas('TileSelection', 776, 356);
+		Tileset.InitCanvas('TileSelection', 776, 256);
 		Client.Start('GameCanvas', 800, 600);
 		Client.LoadLevel('/shared/levels/leveltest.json', Client.OnLevelLoad);
 
