@@ -45,8 +45,8 @@ require([
 	};
 
 	Client.Preload(function() {
-		Tileset.InitCanvas('TileSelection', 456, 256);
-		Client.Start('GameCanvas', 1000, 800);
+		Tileset.InitCanvas('TileSelection', 776, 356);
+		Client.Start('GameCanvas', 800, 600);
 		Client.LoadLevel('/shared/levels/leveltest.json', Client.OnLevelLoad);
 
 		Graphics.canvas.addEventListener('mousemove', OnMouseMove);
@@ -141,6 +141,9 @@ require([
 			controlPanel.find('#yPos').val(selectedEntity.body.y);
 			controlPanel.find('#Components').html(JSON.stringify(selectedEntity.components, null, 4));
 
+			EditorUI.controllers.body.model.x = selectedEntity.body.x;
+			EditorUI.controllers.body.model.y = selectedEntity.body.y;
+
 			_selectTileset(selectedEntity);
 		}
 	}
@@ -158,6 +161,9 @@ require([
 		if (selectedEntity) {
 			selectedEntity.body.x = entityStart.x + (e.offsetX - start.x);
 			selectedEntity.body.y = entityStart.y + (e.offsetY - start.y);
+
+			EditorUI.controllers.body.model.x = selectedEntity.body.x;
+			EditorUI.controllers.body.model.y = selectedEntity.body.y;
 		}
 	}
 

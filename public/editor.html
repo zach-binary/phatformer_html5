@@ -2,12 +2,12 @@
 <head>
 	<title>Phatformer Editor</title>
 	<link rel='stylesheet' href='/css/editor.css' />
-	<!-- <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> -->
 	<script src="/js/lib/jquery.js"></script>
 	<script src='/js/lib/require.js' data-main='/js/editor'></script>
 </head>
 <body>
 	<template id='BodyTemplate'>
+		<legend>Body</legend>
 		<div>
 			<input class='Position' type="number" placeholder="X Position"/>
 		</div>
@@ -22,28 +22,28 @@
 				<option>static</option>
 			</select>
 		</div>
-		<div class='Bounds'>
-			<h4>Bounds</h4>
+		<fieldset class='Bounds'>
+			<legend>Bounds</legend>
 			<div>
 				<input class="Size" type='number' placeholder="Width" />
 			</div>
 			<div>
 				<input class="Size" type='number' placeholder="Height" />
 			</div>
-		</div>
+		</fieldset>
 	</template>
 
-	<main id='EditorMain'>
+	<main>
 		<div id='GamePanel'>
 			<canvas id='GameCanvas' oncontextmenu="return false;"></canvas>
+			<canvas id='TileSelection' oncontextmenu="return false;"></canvas>
 		</div>
 		<section id='Controls' class='Panel'>
 			<nav>
 				<a href='#' id='Save'>Save</a>
 				<a href='#' id='NewButton'>New Entity</a>
 			</nav>
-			<h4>Body</h4>
-			<div class='Body' id='BodyForm1'></div>
+			<fieldset class='Body' id='BodyForm1'></fieldset>
 			<h4>Components</h4>
 			<div>
 				<a href='#' id='Delete'>Delete</a>
@@ -51,18 +51,16 @@
 				<textarea id='Components'></textarea>
 			</div>
 		</section>
-		<section id='Output' class='Panel'>
+		<section id='Output' class='Panel Fixed'>
 			<a href='#' class='Close'>Close</a>
 			<div>
 				<textarea></textarea>
 			<div>
 		</section>
-		<section id='TileSet' class='Panel'>
-			<canvas id='TileSelection' oncontextmenu="return false;"></canvas>
-		</section>
-		<section id='NewEntity' class='Panel'>
+		
+		<section id='NewEntity' class='Panel Fixed'>
 			<h4>Create New Entity</h4>
-			<div class='Body'></div>
+			<fieldset class='Body'></fieldset>
 			<button>Create</button>
 			<a href='#' class='Close'>Close</a>
 		</section>

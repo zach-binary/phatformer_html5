@@ -10,25 +10,21 @@ template { display: none !important; }
 nav { margin-bottom: 10px; }
 nav a { margin-right: 5px; }
 
-#GamePanel { border: 1px solid gray; border-radius: 2px; width: 100%; height: 100%; float: left; }
+main { width: 1120px; }
+main .Panel { border: 1px solid #bbb; background-color: #eee; padding: 10px; margin-top: 10px; float: left; }
+main #NewEntity { position: absolute; width: 200px; top: 200px; left: 400px; padding: 20px; display: none; }
+main fieldset { border: 1px solid gray }
+main fieldset.Body div { text-align: center; margin-top: 5px; }
 
-#GameCanvas { background-color: #6B9CCC; }
+#GamePanel { width: 800px; border: 1px solid gray; float: left; margin: 10 10px 0 10px; }
 
-#EditorMain .Panel { position: absolute; border: 1px solid #bbb; background-color: #eee; padding: 10px; }
+canvas#GameCanvas { background-color: #6B9CCC; }
+canvas#TileSelection { display: block; width: 776px; height: 356px; background-color: #eee; margin: 10px auto;}
 
 #Controls {-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
-#Controls { width: 225px; height: 600px; right: 20px; top: 20px; overflow: scroll; }
-#Controls #Components { width: 100%; height: 64%; margin-top: 10px; }
-#Controls #Body .Bounds { height: 150px; }
+#Controls { width: 280px; height: 978px; overflow: scroll; }
+#Controls #Components { width: 100%; height: 70%; margin-top: 10px; }
 
-#Output { display: none; width: 800px; height: 600px; top: 200px; left: 200px; }
-#Output textarea { border: 1px solid #bbb; width: 100%; height: 95%; margin-top: 4px;  }
+#Output { position: absolute; display: none; width: 800px; height: 600px; top: 200px; left: 200px; }
+#Output textarea { border: 1px solid #bbb; width: 100%; height: 95%; margin-top: 4px; }
 
-#TileSet { width: 456px; height: 256px; bottom: 20px; left: 20px; }
-
-#EditorMain #NewEntity { width: 200px; top: 200px; right: 400px; padding: 20px; display: none; }
-
-.Body .Bounds { height: 100px; }
-.Body > div, .Bounds > div { width: 180px; height: 30px; }
-
-#EditorMain .Panel input, #EditorMain .Panel select { float: right; }

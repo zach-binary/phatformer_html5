@@ -167,5 +167,7 @@ define([
 		Physics.RemoveBody(this);
 	};
 
+	Client.Entity = Entity;
+
 	return Client;
 });
