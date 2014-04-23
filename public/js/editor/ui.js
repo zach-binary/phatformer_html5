@@ -15,29 +15,20 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 			$('#Delete').click(_onDelete);
 			$('#NewButton').click(_onNewEntity);
 			$('#Components').change(_onComponentChange);
-			$('select.BodyType').change(function(e) {
-				_onBodyTypeChange.call(EditorUI, e);
-			});
 			$('#NewEntity button').click(function(e) {
 				_onCreate.call(EditorUI, e);
 			});
-		},
-
-		Update: function() {
-			if (!this.selectedEntity)
-				return;
-
-			this.selectedEntity.body.x = this.controllers.body.model.x;
-			this.selectedEntity.body.y = this.controllers.body.model.y;
-
-			if (this.selectedEntity.body.bounds) {
-				this.selectedEntity.body.bounds.w = this.controllers.body.model.width;
-				this.selectedEntity.body.bounds.h = this.controllers.body.model.height;
-			}
 		}
+
 	};
 
 	var bodyTemplate = document.getElementById('BodyTemplate');
+
+	var _bodyTypes = {
+		'none': 0,
+		'dynamic': 1,
+		'static': 2
+	};
 
 	function _onSave (e) {
 		_hideAll();
@@ -123,11 +114,13 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 
 		var x = 0,
 			y = 0,
+			type = 0,
 			width = 0,
 			height = 0;
 
 		self.observe(x, 'x');
 		self.observe(y, 'y');
+		self.observe(type, 'type');
 		self.observe(width, 'width');
 		self.observe(height, 'height');
 	};
@@ -144,13 +137,20 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		this.elems.y = position[1];
 		this.elems.width = size[0];
 		this.elems.height = size[1];
+		this.bounds = container.querySelector('.Bounds');
+		this.type = container.querySelector('select');
 
 		function bodyChanged(key, old, v) {
 			self.elems[key].value = v;
 		}
 
+		function typeChanged(key, old, v) {
+			self.type.selectedIndex = v;
+		}
+
 		model.subscribe('x', bodyChanged);
 		model.subscribe('y', bodyChanged);
+		model.subscribe('type', typeChanged);
 		model.subscribe('width', bodyChanged);
 		model.subscribe('height', bodyChanged);
 	};
@@ -159,14 +159,73 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		var self = MVC.Controller.apply(this, [delegate, view, model]),
 			key;
 
+		var entity = null;
+
+		Object.defineProperty(this, 'entity', {
+			get: function() { return entity; },
+			set: function(v) {
+				entity = v;
+				this.model.x = v.body.x;
+				this.model.y = v.body.y;
+				this.model.type = _bodyTypes[v.body.type];
+				if (v.body.type !== 'none') {
+					this.model.width = v.body.bounds.w;
+					this.model.height = v.body.bounds.h;
+				}
+			}
+		});
+
 		$.each(view.elems, function(index, el) {
 			$(el).change(function(e) {
 				onBodyChange(index);
 			});
 		});
 
+		$(view.type).change(updateEntityType);
+
 		function onBodyChange(key) {
 			model[key] = view.elems[key].value;
+
+			if (self.entity) {
+				updateEntityBody(self.entity, key, model[key]);
+			}
+		}
+
+		function updateEntityBody(entity, key, value) {
+			if (key === 'x' || key === 'y') {
+				entity.body[key] = value;
+			}
+			else if (entity.body.type !== 'none') {
+				if (key === 'width')
+					entity.body.bounds.w = value;
+				else
+					entity.body.bounds.h = value;
+			}
+		}
+
+		function updateEntityType(e) {
+			model.type = view.type.selectedIndex;
+
+			if (!entity)
+				return;
+
+			switch (view.type.selectedIndex) {
+				case 0:
+					entity.body.type = 'none';
+					$(view.bounds).hide();
+					break;
+				case 1:
+					entity.body.type = 'dynamic';
+					entity.body.bounds = { w: 0, h: 0 };
+					$(view.bounds).show();
+					// and velocity... eventually
+					break;
+				case 2:
+					entity.body.type = 'static';
+					entity.body.bounds = { w: 0, h: 0 };
+					$(view.bounds).show();
+					break;
+			}
 		}
 	};
 

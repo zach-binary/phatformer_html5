@@ -141,8 +141,7 @@ require([
 			controlPanel.find('#yPos').val(selectedEntity.body.y);
 			controlPanel.find('#Components').html(JSON.stringify(selectedEntity.components, null, 4));
 
-			EditorUI.controllers.body.model.x = selectedEntity.body.x;
-			EditorUI.controllers.body.model.y = selectedEntity.body.y;
+			EditorUI.controllers.body.entity = entity;
 
 			_selectTileset(selectedEntity);
 		}
