@@ -3,32 +3,58 @@
 	<title>Phatformer Editor</title>
 	<link rel='stylesheet' href='/css/editor.css' />
 	<script src="/js/lib/jquery.js"></script>
+	<script src="/js/lib/tabIndent.js"></script>
 	<script src='/js/lib/require.js' data-main='/js/editor'></script>
 </head>
 <body>
 	<template id='BodyTemplate'>
-		<legend>Body</legend>
-		<div>
-			<input class='Position' type="number" placeholder="X Position"/>
-		</div>
-		<div>
-			<input class='Position' type="number" placeholder="Y Position" />
-		</div>
-		<div>
-			<label>Type</label>
-			<select class='BodyType'>
-				<option>none</option>
-				<option>dynamic</option>
-				<option>static</option>
-			</select>
-		</div>
+		<fieldset>
+			<legend>Position</legend>
+			<div>
+				<label>x</label>
+				<input class='Position' type="number" placeholder="X Position"/>
+			</div>
+			<div>
+				<label>y</label>
+				<input class='Position' type="number" placeholder="Y Position" />
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Type</legend>
+			<div>
+				<select class='BodyType'>
+					<option>none</option>
+					<option>dynamic</option>
+					<option>static</option>
+				</select>
+			</div>
+		</fieldset>
+		<fieldset class='Speed'>
+			<legend>Speed</legend>
+			<div>
+				<label>max vel x</label>
+				<input class='MaxVel' type='number' placeholder='Max Vel X' />
+			</div>
+			<div>
+				<label>max vel y</label>
+				<input class='MaxVel' type='number' placeholder='Max Vel Y' />
+			</div>						
+		</fieldset>
 		<fieldset class='Bounds'>
 			<legend>Bounds</legend>
 			<div>
+				<label>width</label>
 				<input class="Size" type='number' placeholder="Width" />
 			</div>
 			<div>
+				<label>height</label>
 				<input class="Size" type='number' placeholder="Height" />
+			</div>
+		</fieldset>
+		<fieldset class='Components'>
+			<legend>Components</legend>
+			<div>
+				<textarea class='tabIndent'></textarea>
 			</div>
 		</fieldset>
 	</template>
@@ -43,13 +69,7 @@
 				<a href='#' id='Save'>Save</a>
 				<a href='#' id='NewButton'>New Entity</a>
 			</nav>
-			<fieldset class='Body' id='BodyForm1'></fieldset>
-			<h4>Components</h4>
-			<div>
-				<a href='#' id='Delete'>Delete</a>
-			<div>
-				<textarea id='Components'></textarea>
-			</div>
+			<div class='Body' id='BodyForm1'></div>
 		</section>
 		<section id='Output' class='Panel Fixed'>
 			<a href='#' class='Close'>Close</a>
@@ -57,10 +77,9 @@
 				<textarea></textarea>
 			<div>
 		</section>
-		
 		<section id='NewEntity' class='Panel Fixed'>
 		<h4>Create New Entity</h4>
-			<fieldset class='Body'></fieldset>
+			<div class='Body'></div>
 			<button>Create</button>
 			<a href='#' class='Close'>Close</a>
 		</section>

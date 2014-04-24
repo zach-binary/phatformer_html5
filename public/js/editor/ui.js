@@ -5,7 +5,7 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		controllers: {},
 
 		Start: function() {
-			$('fieldset.Body').html(bodyTemplate.content.cloneNode(true));
+			$('.Body').html(bodyTemplate.content.cloneNode(true));
 
 			this.controllers.body = _newBodyController(this, '#Controls .Body');
 			this.controllers.bodyNew = _newBodyController(this, '#NewEntity .Body');
@@ -16,10 +16,11 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 				_onDelete.call(EditorUI, e);
 			});
 			$('#NewButton').click(_onNewEntity);
-			$('#Components').change(_onComponentChange);
 			$('#NewEntity button').click(function(e) {
 				_onCreate.call(EditorUI, e);
 			});
+
+			tabIndent.renderAll();
 		}
 
 	};
@@ -53,29 +54,6 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		EditorUI.selectedEntity = null;
 	}
 
-	function _onComponentChange (e) {
-		var text = $(e.target).val();
-		try {
-			EditorUI.selectedEntity.components = JSON.parse(text);
-		}
-		catch (exception) { }
-	}
-
-	function _onBodyTypeChange (e) {
-		var target = $(e.target),
-			boundsForm = target.parent().siblings('.Bounds'),
-			type = target.val();
-
-		switch(type) {
-			case 'dynamic' :
-			case 'static' :
-				boundsForm.show();
-				break;
-			default:
-				boundsForm.hide();
-		}
-	}
-
 	function _onNewEntity (e) {
 		_hideAll();
 		$('#NewEntity').show();
@@ -87,13 +65,13 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 			body: {
 				x: this.controllers.bodyNew.model.x,
 				y: this.controllers.bodyNew.model.y,
-				type: 'static',
+				type: this.controllers.bodyNew.model.type,
 				bounds: { 
 					w: this.controllers.bodyNew.model.width, 
 					h: this.controllers.bodyNew.model.height
 				}
 			},
-			components: {}
+			components: this.controllers.bodyNew.model.components
 		};
 
 		Client.entities.push(new Client.Entity(newEntity));
@@ -119,8 +97,11 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		var x = 0,
 			y = 0,
 			type = 0,
+			maxVelX = 0,
+			maxVelY = 0,
 			width = 0,
-			height = 0;
+			height = 0,
+			components = '';
 
 		this.clear = function() {
 			this.x = 0;
@@ -128,20 +109,24 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 			this.width = 0;
 			this.height = 0;
 			this.type = 0;
-		}
+		};
 
 		self.observe(x, 'x');
 		self.observe(y, 'y');
 		self.observe(type, 'type');
 		self.observe(width, 'width');
+		self.observe(maxVelX, 'maxVelX');
+		self.observe(maxVelY, 'maxVelY');
 		self.observe(height, 'height');
+		self.observe(components, 'components');
 	};
 
 	Body.View = function(container, model) {
 		var self = MVC.View.apply(this, [container, model]);
 
 		var position = container.getElementsByClassName('Position'),
-			size = container.getElementsByClassName('Size');
+			size = container.getElementsByClassName('Size'),
+			maxVel = container.getElementsByClassName('MaxVel');
 
 		this.elems = {};
 
@@ -149,8 +134,16 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		this.elems.y = position[1];
 		this.elems.width = size[0];
 		this.elems.height = size[1];
+		this.elems.maxVelX = maxVel[0];
+		this.elems.maxVelY = maxVel[1];
+
 		this.bounds = container.querySelector('.Bounds');
+		this.maxVel = container.querySelector('.Speed');
 		this.type = container.querySelector('select');
+		this.components = container.querySelector('.Components textarea');
+
+		$(this.bounds).hide();
+		$(this.maxVel).hide();
 
 		function bodyChanged(key, old, v) {
 			self.elems[key].value = v;
@@ -158,13 +151,38 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 
 		function typeChanged(key, old, v) {
 			self.type.selectedIndex = v;
+			toggleFields();
+		}
+
+		function componentChanged(key, old, v) {
+			self.components.value = JSON.stringify(v, null, 4);
+		}
+
+		function toggleFields() {
+			switch (self.type.selectedIndex) {
+				case 0:
+					$(self.bounds).hide();
+					$(self.maxVel).hide();
+					break;
+				case 1:
+					$(self.bounds).show();
+					$(self.maxVel).show();
+					break;
+				case 2:
+					$(self.bounds).show();
+					$(self.maxVel).hide();
+					break;
+			}
 		}
 
 		model.subscribe('x', bodyChanged);
 		model.subscribe('y', bodyChanged);
 		model.subscribe('type', typeChanged);
+		model.subscribe('maxVelX', bodyChanged);
+		model.subscribe('maxVelY', bodyChanged);
 		model.subscribe('width', bodyChanged);
 		model.subscribe('height', bodyChanged);
+		model.subscribe('components', componentChanged);
 	};
 
 	Body.Controller = function(delegate, view, model) {
@@ -188,6 +206,11 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 					this.model.width = v.body.bounds.w;
 					this.model.height = v.body.bounds.h;
 				}
+				if (v.body.type === 'dynamic') {
+					this.model.maxVelX = v.body.maxVel.x;
+					this.model.maxVelY = v.body.maxVel.y;
+				}
+				this.model.components = v.components;
 			}
 		});
 
@@ -198,6 +221,7 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		});
 
 		$(view.type).change(updateEntityType);
+		$(view.components).change(updateComponents);
 
 		function onBodyChange(key) {
 			model[key] = parseInt(view.elems[key].value);
@@ -208,14 +232,25 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		}
 
 		function updateEntityBody(entity, key, value) {
-			if (key === 'x' || key === 'y') {
-				entity.body[key] = value;
-			}
-			else if (entity.body.type !== 'none') {
-				if (key === 'width')
+			switch(key) {
+				case 'x': 
+					entity.body.x = value;
+					break;
+				case 'y':
+					entity.body.y = value;
+					break;
+				case 'width':
 					entity.body.bounds.w = value;
-				else
+					break;
+				case 'height':
 					entity.body.bounds.h = value;
+					break;
+				case 'maxVelX':
+					entity.body.maxVel.x = value;
+					break;
+				case 'maxVelY':
+					entity.body.maxVel.y = value;
+					break;
 			}
 		}
 
@@ -228,19 +263,31 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 			switch (view.type.selectedIndex) {
 				case 0:
 					entity.body.type = 'none';
-					$(view.bounds).hide();
 					break;
 				case 1:
 					entity.body.type = 'dynamic';
 					entity.body.bounds = { w: 0, h: 0 };
-					$(view.bounds).show();
-					// and velocity... eventually
+					entity.body.maxVel = { x: 0, y: 0 };
 					break;
 				case 2:
 					entity.body.type = 'static';
 					entity.body.bounds = { w: 0, h: 0 };
-					$(view.bounds).show();
 					break;
+			}
+		}
+
+		function updateComponents(e) {
+
+			try {
+				model.components = JSON.parse(view.components.value);
+				if (entity)
+					entity.components = model.components;
+
+				$(view.components).removeClass('Error');
+			}
+			catch (exception) { 
+				console.log(exception);
+				$(view.components).addClass('Error');
 			}
 		}
 	};

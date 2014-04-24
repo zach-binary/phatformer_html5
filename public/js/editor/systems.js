@@ -15,7 +15,7 @@ define(['game/graphics'], function(Graphics) {
 
 		_showTileSet(e, c, sprite);
 
-		if (Input.MouseDown(0)) 
+		if (Input.MouseDown(0) && !Input.MouseDown(2)) 
 			_updateMap(e, c, sprite);
 	};
 
@@ -23,10 +23,11 @@ define(['game/graphics'], function(Graphics) {
 		if (Tileset.selected.length <= 0)
 			return;
 
-		var x = Math.floor(Input.mouse.x / sprite.w),
-			y = Math.floor(Input.mouse.y / sprite.h),
+			var x = Math.floor((Input.mouse.x - e.body.x) / sprite.w),
+			y = Math.floor((Input.mouse.y - e.body.y) / sprite.h),
 			index = 0, i, length = Tileset.selected.length,
-			xOffset = x;
+			xOffset = x,
+			mapLength = c.width * c.height;
 
 		for (i = 0; i < length; i++) {
 			index = y * c.width + xOffset;
@@ -38,7 +39,7 @@ define(['game/graphics'], function(Graphics) {
 			else
 				xOffset++;
 
-			if (index > c.map.length)
+			if (index > mapLength)
 				break;
 
 			c.map[index] = Tileset.selected[i];
