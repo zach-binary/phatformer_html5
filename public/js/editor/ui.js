@@ -150,7 +150,7 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		}
 
 		function typeChanged(key, old, v) {
-			self.type.selectedIndex = v;
+			self.type.selectedIndex = _bodyTypes[v];
 			toggleFields();
 		}
 
@@ -201,7 +201,7 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 				entity = v;
 				this.model.x = v.body.x;
 				this.model.y = v.body.y;
-				this.model.type = _bodyTypes[v.body.type];
+				this.model.type = v.body.type;
 				if (v.body.type !== 'none') {
 					this.model.width = v.body.bounds.w;
 					this.model.height = v.body.bounds.h;
@@ -255,7 +255,7 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 		}
 
 		function updateEntityType(e) {
-			model.type = view.type.selectedIndex;
+			model.type = view.type.options[view.type.selectedIndex].text;
 
 			if (!entity)
 				return;

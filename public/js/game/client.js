@@ -165,6 +165,12 @@ define([
 		Client.entities.splice(index, 1);
 
 		Physics.RemoveBody(this);
+
+		if (this.components.hasOwnProperty('platformer')) {
+			var is_player = this.components.platformer.is_player;
+			if (is_player) 
+				Client.LoadLevel('/shared/levels/leveltest.json', Client.OnLevelLoad);
+		}
 	};
 
 	Client.Entity = Entity;

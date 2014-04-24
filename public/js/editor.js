@@ -56,12 +56,10 @@ require([
 		EditorUI.Start();
 	});
 
-	var start = {};
-	var lastOffset = {};
-	var selectedEntity = null;
-	var entityStart = {};
-
-	var controlPanel = $('#Controls');
+	var start = {},
+		lastOffset = {},
+		selectedEntity = null,
+		entityStart = {};
 
 	function DisplayEntityInfo (e) {
 		Graphics.context.fillStyle = 'rgba(0, 0, 0, 1.0)';
@@ -136,10 +134,6 @@ require([
 
 			entityStart.x = selectedEntity.body.x;
 			entityStart.y = selectedEntity.body.y;
-
-			controlPanel.find('#xPos').val(selectedEntity.body.x);
-			controlPanel.find('#yPos').val(selectedEntity.body.y);
-			controlPanel.find('#Components').html(JSON.stringify(selectedEntity.components, null, 4));
 
 			EditorUI.controllers.body.entity = entity;
 

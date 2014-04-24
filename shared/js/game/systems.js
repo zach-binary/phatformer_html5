@@ -78,11 +78,6 @@
 
 		if (e.Touches('deadzone').length > 0) {
 			e.Kill();
-
-			// TODO: this can't use Client if it's going to be shared, maybe publish an event?
-			if (c.is_player)
-				Client.LoadLevel('/shared/levels/level1.json', Client.OnLevelLoad);
-
 			return;
 		}
 
