@@ -18,8 +18,9 @@
 		var tileCollisions = e.Touches('collision_map'),
 			i = tileCollisions.length;
 
-		if (i <= 0 || e.body.vel.y < 0)
+		if (i <= 0 || e.body.vel.y < 0) {
 			c.grounded = false;
+		}
 		else if (!c.grounded) {
 			while(i--) {
 				if (tileCollisions[i].mtd.y < 0) {

@@ -66,6 +66,14 @@ define(['game/client', 'editor/mvc', 'shim/template'], function(Client, MVC) {
 				x: this.controllers.bodyNew.model.x,
 				y: this.controllers.bodyNew.model.y,
 				type: this.controllers.bodyNew.model.type,
+				maxVel: {
+					x: this.controllers.bodyNew.model.maxVelX,
+					y: this.controllers.bodyNew.model.maxVelY
+				},
+				accel: {
+					x: 0,
+					y: 0
+				},
 				bounds: { 
 					w: this.controllers.bodyNew.model.width, 
 					h: this.controllers.bodyNew.model.height

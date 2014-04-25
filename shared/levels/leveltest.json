@@ -32,7 +32,10 @@
                 "is_player": true
             },
             "sprite": {
-                "name": "ninja"
+                "name": "ninja",
+                "anim": "idle",
+                "elapsed": 0,
+                "index": 0
             },
             "controls": {
                 "up": "W",
@@ -1325,7 +1328,56 @@
         },
         "components": {
             "sprite": {
+                "name": "wolf",
+                "anim": "running",
+                "elapsed": 0,
+                "index": 0
+            },
+            "platformer": {
+                "is_player": false
+            },
+            "gravity": {
+                "accel": 0.0048,
+                "grounded": false
+            },
+            "wolf": true,
+            "wolf_animations": {
                 "name": "wolf"
+            }
+        },
+        "name": "wolf",
+        "hits": []
+    },
+    {
+        "body": {
+            "x": 946,
+            "y": 131,
+            "type": "dynamic",
+            "vel": {
+                "x": 0.1,
+                "y": 0
+            },
+            "accel": {
+                "x": 0,
+                "y": 0
+            },
+            "maxVel": {
+                "x": 20,
+                "y": 2
+            },
+            "bounds": {
+                "x": 946,
+                "y": 131,
+                "w": 64,
+                "h": 32
+            }
+        },
+        "components": {
+            "sprite": {
+                "name": "wolf",
+                "anim": "running",
+                "elapsed": 0,
+                "index": 0
             },
             "platformer": {
                 "is_player": false
@@ -1432,8 +1484,8 @@
             "y": 0,
             "type": 0,
             "bounds": {
-                "x": 400,
-                "y": 40,
+                "x": 578,
+                "y": 0,
                 "w": 0,
                 "h": 0
             }
@@ -2181,6 +2233,8 @@
             "y": 257,
             "type": "static",
             "bounds": {
+                "x": 611,
+                "y": 257,
                 "w": 96,
                 "h": 32
             }
@@ -2196,6 +2250,8 @@
             "y": 192,
             "type": "static",
             "bounds": {
+                "x": 754,
+                "y": 192,
                 "w": 96,
                 "h": 32
             }
@@ -2211,6 +2267,8 @@
             "y": 192,
             "type": "static",
             "bounds": {
+                "x": 880,
+                "y": 192,
                 "w": 225,
                 "h": 32
             }
@@ -2226,6 +2284,8 @@
             "y": 128,
             "type": "static",
             "bounds": {
+                "x": 881,
+                "y": 128,
                 "w": 32,
                 "h": 64
             }
@@ -2241,12 +2301,60 @@
             "y": 128,
             "type": "static",
             "bounds": {
+                "x": 1074,
+                "y": 128,
                 "w": 32,
                 "h": 64
             }
         },
         "components": {
             "collision_map": true
+        },
+        "hits": []
+    },
+    {
+        "body": {
+            "x": 916,
+            "y": 158,
+            "type": "static",
+            "bounds": {
+                "x": 916,
+                "y": 158,
+                "w": 2,
+                "h": 32
+            }
+        },
+        "components": {
+            "keypoint": {
+                "target": "wolf",
+                "vel": {
+                    "x": 0.2,
+                    "y": 0
+                }
+            }
+        },
+        "hits": []
+    },
+    {
+        "body": {
+            "x": 1067,
+            "y": 159,
+            "type": "static",
+            "bounds": {
+                "x": 1069,
+                "y": 159,
+                "w": 2,
+                "h": 32
+            }
+        },
+        "components": {
+            "keypoint": {
+                "target": "wolf",
+                "vel": {
+                    "x": -0.2,
+                    "y": 0
+                }
+            }
         },
         "hits": []
     }

@@ -6,10 +6,18 @@ define(['game/graphics', 'game/input'], function(Graphics, Input) {
 
 	Systems.Graphics.sprite = function(e, c) {
 		var sprite = Graphics.sprites[c.name],
+			anim = sprite.anims[c.anim],
 			frame;
 
-		sprite.Update();
-		frame = sprite.currentFrame;
+		// need a better way to expose delta times
+		c.elapsed += Physics.delta;
+
+		if (c.elapsed > anim.throttle) {
+			c.index = c.index >= anim.length - 1 ? 0 : c.index + 1;
+			c.elapsed = 0;
+		}
+
+		frame = sprite.frames[anim.frames[c.index]];
 
 		Graphics.context.drawImage(sprite.image,
 			frame.x, frame.y,
@@ -17,31 +25,6 @@ define(['game/graphics', 'game/input'], function(Graphics, Input) {
 			e.body.x - Graphics.offset.x, e.body.y - Graphics.offset.y, 
 			frame.w, frame.h
 		);
-	};
-
-	Systems.player_animations = function(e, c) {
-		var sprite = Graphics.sprites[c.name];
-
-		if (e.body.vel.y !== 0 && c.lastVel.x >= 0) {
-			sprite.currentAnim = sprite.anims.jumping;
-		}
-		else if (e.body.vel.y !== 0) {
-			sprite.currentAnim = sprite.anims.jumping_left;
-		}
-		else if (e.body.vel.x === 0 && c.lastVel.x >= 0) {
-			sprite.currentAnim = sprite.anims.idle;
-		}
-		else if (e.body.vel.x === 0) {
-			sprite.currentAnim = sprite.anims.idle_left;
-		}
-		else if (e.body.vel.x > 0) {
-			c.lastVel = { x: e.body.vel.x, y: e.body.vel.y };
-			sprite.currentAnim = sprite.anims.running;
-		}
-		else if (e.body.vel.x < 0) {
-			c.lastVel = { x: e.body.vel.x, y: e.body.vel.y };
-			sprite.currentAnim = sprite.anims.running_left;
-		}
 	};
 
 	Systems.Graphics.tilemap = function(e, c) {
@@ -72,6 +55,34 @@ define(['game/graphics', 'game/input'], function(Graphics, Input) {
 
 	};
 
+	Systems.player_animations = function(e, c) {
+		var sprite = e.components.sprite;
+
+		if (!sprite)
+			return;
+
+		if (e.body.vel.y !== 0 && c.lastVel.x >= 0) {
+			sprite.anim = 'jumping';
+		}
+		else if (e.body.vel.y !== 0) {
+			sprite.anim = 'jumping_left';
+		}
+		else if (e.body.vel.x === 0 && c.lastVel.x >= 0) {
+			sprite.anim = 'idle';
+		}
+		else if (e.body.vel.x === 0) {
+			sprite.anim = 'idle_left';
+		}
+		else if (e.body.vel.x > 0) {
+			c.lastVel = { x: e.body.vel.x, y: e.body.vel.y };
+			sprite.anim = 'running';
+		}
+		else if (e.body.vel.x < 0) {
+			c.lastVel = { x: e.body.vel.x, y: e.body.vel.y };
+			sprite.anim = 'running_left';
+		}
+	};
+
 	Systems.center = function(e, c) {
 		var center = { 
 			x: Graphics.canvas.width / 2, 
@@ -96,12 +107,15 @@ define(['game/graphics', 'game/input'], function(Graphics, Input) {
 	};
 
 	Systems.wolf_animations = function(e, c) {
-		var sprite = Graphics.sprites[c.name];
+		var sprite = e.components.sprite;
+
+		if (!sprite)
+			return;
 
 		if (e.body.vel.x > 0)
-			sprite.currentAnim = sprite.anims.running;
+			sprite.anim = 'running';
 		else
-			sprite.currentAnim = sprite.anims.running_left;
+			sprite.anim = 'running_left';
 	};
 
 	return Systems;

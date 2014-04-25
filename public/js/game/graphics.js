@@ -27,9 +27,7 @@ define(function() {
 		LoadSprite: function(url, name, w, h, callback) {
 			Graphics.sprites[name] = new Graphics.Sprite(url, w, h, callback);
 			return Graphics.sprites[name];
-		},
-
-		
+		}
 	};
 
 	Graphics.Sprite = function(url, w, h, callback) {
@@ -38,7 +36,6 @@ define(function() {
 		this.w = w;
 		this.h = h;
 		this.anims = {};
-		this.currentAnim = null;
 		this.frames = [];
 
 		var self = this;
@@ -64,24 +61,8 @@ define(function() {
 		this.anims[name] = {
 			throttle: throttle,
 			frames: frames,
-			elapsed: 0,
-			index: 0,
 			length: frames.length
 		};
-	};
-
-	Graphics.Sprite.prototype.Update = function() {
-		if (!this.currentAnim)
-			return;
-
-		this.currentAnim.elapsed += Physics.delta;
-
-		if (this.currentAnim.elapsed > this.currentAnim.throttle) {
-			this.currentAnim.index = this.currentAnim.index >= this.currentAnim.length - 1 ? 0 : this.currentAnim.index + 1;
-			this.currentAnim.elapsed = 0;
-		}		
-
-		this.currentFrame = this.frames[this.currentAnim.frames[this.currentAnim.index]];
 	};
 
 	Graphics.Sprite.prototype.GetFrameIndex = function(x, y) {

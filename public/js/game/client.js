@@ -173,6 +173,10 @@ define([
 		}
 	};
 
+	Entity.prototype.Has = function(comp) {
+		return this.components.hasOwnProperty(comp);
+	};
+
 	Client.Entity = Entity;
 
 	return Client;
